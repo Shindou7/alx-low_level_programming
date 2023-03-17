@@ -10,7 +10,8 @@ int main(void)
 
 	for (alphab = 'a'; alphab <= 'z'; alphab++)
 	{
-		putshar("alphab");
+		putchar(alphab);
 	}
-	return (0)
+	putchar('\n');
+	return (0);
 }

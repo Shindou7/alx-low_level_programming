@@ -1,9 +1,11 @@
 #include <stdio.h>
 /**
- *main - Entry point
- *Dicription : Write a program that prints the alphabet in lowercase
- *Return : Always 0
-*/
+ * main - Entry point
+ *
+ * Description: Prints the alphabet in lowercase, followed by a new line.
+ *
+ * Return: 0 upon successful completion.
+ */
 int main(void)
 {
 	char alphab;

@@ -2,9 +2,9 @@
 #include <time.h>
 #include <stdio.h>
 /**
- *main - Entry point
- *Discription the last digit
- *Return: Always 0
+  *main - Entry point
+  *Discription the last digit
+  *Return: Always 0
 */
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
 	{
 		printf("Last digit of %d is %d  and is greater than 5\n", n, l);
 	}
-	else if (n == 0)
+	else if (l == 0)
 	{
 		printf("Last digit of %d is %d and is 0\n", n, l);
 	}

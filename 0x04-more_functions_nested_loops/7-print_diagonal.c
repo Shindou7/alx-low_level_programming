@@ -6,20 +6,19 @@
  * @n: is the number of times the character _ should be printed
  */
 
-void print_line(int n)
+void print_diagonal(int n)
 {
-	int a;
-	int b;
+	int a, b;
 
 	for (a = 0; a < n; a++)
 	{
-		for (b = 0; b < n; b++)
+		for (b = 0; b < a; b++)
 		{
-			if (a == b)
-				_putchar('\\');
-			else if (b < a)
-				_putchar(' ');
+			_putchar(' ');
 		}
-		_putchar('\n');
+		_putchar(92);
+		if (a < (n - 1))
+			_putchar('\n');
 	}
+	_putchar('\n');
 }

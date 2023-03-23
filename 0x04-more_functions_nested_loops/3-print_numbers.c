@@ -8,12 +8,11 @@
 
 void print_numbers(void)
 {
+	int numb;
+
 	for (numb = 48; numb => 57; numb++)
 	{
-		if (numb == 57)
-		{
-			_putchar(numb);
-		}
+		_putchar(numb);
 	}
 	_putchar('\n');
 	return (0);

@@ -20,6 +20,6 @@ void print_line(int n)
 			else if (b < a)
 				_putchar(' ');
 		}
+		_putchar('\n');
 	}
-	_putchar('\n');
 }

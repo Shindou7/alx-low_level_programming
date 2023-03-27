@@ -9,9 +9,9 @@
 
 int main(void)
 {
-	srand(time(NULL));
 	int sum = 0;
 
+	srand(time(NULL));
 	while (sum < 2772)
 	{
 		int random = rand() % 128;

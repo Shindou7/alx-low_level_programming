@@ -3,38 +3,28 @@
 /**
  * _atoi - converts str to integer.
  * @s: put string.
- * Return: integer.
+ * Return: integer
  */
 
 int _atoi(char *s)
 {
 	int sign = 1;
-	int result = 0;
-	int i = 0;
+	unsigned int num = 0;
+	int found_num = 0;
 
-	while (s[i] == ' ')
+	while (*s)
 	{
-		i++;
+		if (*s == '-')
+			sign *= -1;
+		else if (*s >= '0' && *s <= '9')
+		{
+			num = num * 10 + (*s - '0');
+			found_num = 1;
+		}
+		else if (found_num)
+			break;
+		s++;
 	}
-
-	if (s[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-
-	else if (s[i] == '+')
-	{
-		sign = 1;
-		i++;
-	}
-
-
-	while (s[i] >= '0' && s[i] <= '9')
-	{
-		result = result * 10 + (s[i] - '0');
-		i++;
-	}
-
-	return (result * sign);
+	return (num * sign);
 }
+

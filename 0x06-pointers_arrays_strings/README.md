@@ -1,6 +1,6 @@
-### <span style="color:blue"> 0x06. C - More pointers, arrays and strings </span>
+# <span style="color:blue"> 0x06. C - More pointers, arrays and strings </span>
 ## 0. strcat
-# mandatory Write a function that concatenates two strings.
+### mandatory Write a function that concatenates two strings.
 
 Prototype: char *_strcat(char *dest, char *src);
 This function appends the src string to the dest string, overwriting the terminating null byte
@@ -8,7 +8,7 @@ This function appends the src string to the dest string, overwriting the termina
 Returns a pointer to the resulting string dest
 FYI: The standard library provides a similar function: strcat. Run man strcat to learn more.
 ## 1. strncat
-# mandatory Write a function that concatenates two strings.
+### mandatory Write a function that concatenates two strings.
 
 Prototype: char *_strncat(char *dest, char *src, int n);
 The _strncat function is similar to the _strcat function, except that
@@ -18,7 +18,7 @@ Return a pointer to the resulting string dest
 FYI: The standard library provides a similar function: strncat. Run man strncat to learn more.
 
 ## 2. strncpy
-#mandatory Write a function that copies a string.
+###mandatory Write a function that copies a string.
 
 Prototype: char *_strncpy(char *dest, char *src, int n);
 Your function should work exactly like strncpy
@@ -26,7 +26,7 @@ FYI: The standard library provides a similar function: strncpy. Run man strncpy 
 
 
 ## 3. strcmp
-# mandatory Write a function that compares two strings.
+### mandatory Write a function that compares two strings.
 
 Prototype: int _strcmp(char *s1, char *s2);
 Your function should work exactly like strcmp
@@ -34,26 +34,26 @@ FYI: The standard library provides a similar function: strcmp. Run man strcmp to
 
 
 ## 4. I am a kind of paranoid in reverse. I suspect people of plotting to make me happy
-# mandatory Write a function that reverses the content of an array of integers.
+### mandatory Write a function that reverses the content of an array of integers.
 
 Prototype: void reverse_array(int *a, int n);
 Where n is the number of elements of the array
 
 
 ## 5. Always look up
-# mandatory Write a function that changes all lowercase letters of a string to uppercase.
+### mandatory Write a function that changes all lowercase letters of a string to uppercase.
 
 Prototype: char *string toupper(char *);
 
 ## 6. Expect the best. Prepare for the worst. Capitalize on what comes
-# mandatory Write a function that capitalizes all words of a string.
+### mandatory Write a function that capitalizes all words of a string.
 
 Prototype: char *cap string(char *);
 Separators of words: space, tabulation, new line, ,, ;, ., !, ?, ", (, ), {, and }
 
 
 ## 7. Mozart composed his music not for the elite, but for everybody
-# mandatory Write a function that encodes a string into 1337.
+### mandatory Write a function that encodes a string into 1337.
 
 Letters a and A should be replaced by 4
 Letters e and E should be replaced by 3

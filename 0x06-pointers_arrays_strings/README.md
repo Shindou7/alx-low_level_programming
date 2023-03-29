@@ -1,4 +1,4 @@
-### <font color="blue">0x06. C - More pointers, arrays and strings</font>
+### <span style="color:blue">0x06. C - More pointers, arrays and strings</span>
 ## 0. strcat
 mandatory
 Write a function that concatenates two strings.

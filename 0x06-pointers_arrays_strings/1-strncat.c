@@ -6,6 +6,7 @@
  * @n: the byte usefrom source.
  * Return: return to dest.
  */
+
 char *_strncat(char *dest, char *src, int n)
 {
 	int dest_len = 0;
@@ -17,19 +18,11 @@ char *_strncat(char *dest, char *src, int n)
 
 	int i;
 
-	for (i = 0; i < n; i++)
+	for (i = 0; i < n && src[i] != '\0'; i++)
 	{
-		if (src[i] != '\0')
-		{
-			dest[dest_len + i] = src[i];
-		}
-
-		else
-		{
-			break;
-		}
+		dest[dest_len + i] = src[i];
 	}
-
 	dest[dest_len + i] = '\0';
+
 	return (dest);
 }

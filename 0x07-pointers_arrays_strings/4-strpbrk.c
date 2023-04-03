@@ -1,13 +1,13 @@
 #include "main.h"
 
 /**
- * _strspn -  unction that searches a string for any of a set of bytes
+ * _strpbrk -  unction that searches a string for any of a set of bytes
  * @s:  the first occurrence in the string
  * @accept: any of the bytes in the string
  * Return: return the number of bytes
  */
 
-unsigned int _strspn(char *s, char *accept)
+char *_strpbrk(char *s, char *accept)
 {
 	unsigned int n;
 	unsigned int m;
@@ -18,11 +18,9 @@ unsigned int _strspn(char *s, char *accept)
 		{
 			if (*(s + n) == *(accept + m))
 			{
-				break;
+				return (s + n);
 			}
 		}
-		if (*(accept + m) == '\0')
-			break;
 	}
-	return (n);
+	return ('\0');
 }

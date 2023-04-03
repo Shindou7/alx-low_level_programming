@@ -10,14 +10,13 @@
 
 char *_strchr(char *s, char c)
 {
-	char *p;
-
-	for (p = s; *p != '\0'; p++)
+	while (*s != '\0')
 	{
-		if (*p == c)
+		if (*s == c)
 		{
-			return (p);
+			return (s);
 		}
+	s++;
 	}
 	return (NULL);
 }

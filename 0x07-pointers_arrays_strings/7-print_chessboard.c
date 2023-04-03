@@ -16,8 +16,8 @@ void print_chessboard(char (*a)[8])
 	{
 		for (m = 0; m <= 7; m++)
 		{
-			printf("%c ", a[n][m]);
+			_putchar(a[n][m]);
 		}
-		printf("\n");
+		_putchar('\n');
 	}
 }

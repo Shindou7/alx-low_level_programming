@@ -1,25 +1,21 @@
 #include "main.h"
 
 /**
- * binary_power - recursive function to perform binary search
+ * power_fonction - helper function for _sqrt_recursion
  * @n: input number
- * @min: minimum value
- * @max: maximum value
+ * @m: iterator
  * Return: square root of n or -1 if it doesn't have a natural square root
  */
-int binary_power(int n, int min, int max)
-{
-	if (max < min)
-		return (-1);
-	int mid = (min + max) / 2;
 
-	if (mid * mid == n)
-		return (mid);
-	else if (mid * mid < n)
-		return (binary_power(n, mid + 1, max));
-	else
-		return (binary_power(n, min, mid - 1));
+int power_fonction(int n, int m)
+{
+	if (m * m == n)
+		return (m);
+	else if (m * m > n)
+		return (-1);
+	return (power_fonction(n, m + 1));
 }
+
 /**
  * _sqrt_recursion - returns the natural square root of a number.
  * @n: input number.
@@ -34,5 +30,5 @@ int _sqrt_recursion(int n)
 	else if (n == 1)
 		return (1);
 	else
-		return (binary_power(n, 1, n));
+		return (power_fonction(n, 1));
 }

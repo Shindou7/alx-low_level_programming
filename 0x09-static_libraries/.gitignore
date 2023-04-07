@@ -5,3 +5,6 @@ main.c
 *.a
 # Executable file
 a.out
+# Executables
+*.out
+*.exe

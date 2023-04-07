@@ -16,5 +16,5 @@
 3-strspn.o
 4-strpbrk.o
 6-abs.o
-main
+main.c
 _putchar.o

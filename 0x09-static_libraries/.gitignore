@@ -1,1 +1,5 @@
 main.c
+# Object files
+*.o
+# Static libraries
+*.a

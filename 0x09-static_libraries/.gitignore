@@ -3,3 +3,5 @@ main.c
 *.o
 # Static libraries
 *.a
+# Executable file
+a.out

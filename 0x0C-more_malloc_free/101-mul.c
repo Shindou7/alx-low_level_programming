@@ -54,12 +54,15 @@ int main(int argc, char *argv[])
 	char *result;
 
 	if (argc != 3)
+	{
 		printf("Error\n");
-	return (98);
+		return (98);
+	}
 	if (strcmp(argv[1], "0") == 0 || strcmp(argv[2], "0") == 0)
+	{
 		printf("0\n");
-	return (0);
-
+		return (0);
+	}
 	len1 = _checknum(argv[1]);
 	len2 = _checknum(argv[2]);
 	result = (char *) calloc(len1 + len2 + 1, sizeof(char));

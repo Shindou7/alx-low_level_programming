@@ -1,46 +1,53 @@
 #include <stdlib.h>
-#include <string.h>
 #include "dog.h"
 
 /**
- * new_dog - creates a new dog with given name, age, owner
- * @name: name of the dog
- * @age: age of the dog
- * @owner: owner of the dog
- * Return: pointer to the new dog struct, or NULL
+ * new_dog - creates a new dog.
+ * @name: name of the dog.
+ * @age: age of the dog.
+ * @owner: owner of the dog.
+ *
+ * Return: struct dog.
+ * if fails, returns NULL.
  */
-
 dog_t *new_dog(char *name, float age, char *owner)
 {
-	dog_t *new_dog;
-	char *new_name, *new_owner;
+	dog_t *p_dog;
+	int i, lname, lowner;
 
-/*Allocate memory for the dog struct*/
-
-	new_dog = malloc(sizeof(dog_t));
-	if (new_dog == NULL)
+	if (name == NULL || owner == NULL)
 		return (NULL);
 
-/*Allocate memory for the name and owner and copy them*/
+	p_dog = malloc(sizeof(*p_dog));
+	if (p_dog == NULL)
+		return (NULL);
 
-	new_name = strdup(name);
-	if (new_name == NULL)
+	lname = 0;
+	while (name[lname] != '\0')
+		lname++;
+	p_dog->name = malloc(lname + 1);
+	if (p_dog->name == NULL)
 	{
-		free(new_dog);
+		free(p_dog);
 		return (NULL);
 	}
-	new_owner = strdup(owner);
-	if (new_owner == NULL)
+	for (i = 0; i <= lname; i++)
+		p_dog->name[i] = name[i];
+
+	lowner = 0;
+	while (owner[lowner] != '\0')
+		lowner++;
+	p_dog->owner = malloc(lowner + 1);
+	if (p_dog->owner == NULL)
 	{
-		free(new_name);
-		free(new_dog);
+		free(p_dog->name);
+		free(p_dog);
 		return (NULL);
 	}
-/*Initialize the dog struct*/
-	new_dog->name = new_name;
-	new_dog->age = age;
-	new_dog->owner = new_owner;
+	for (i = 0; i <= lowner; i++)
+		p_dog->owner[i] = owner[i];
 
-/*Return the new dog struct*/
-	return (new_dog);
+	p_dog->age = age;
+
+	return (p_dog);
 }

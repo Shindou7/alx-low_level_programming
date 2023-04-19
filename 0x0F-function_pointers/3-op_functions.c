@@ -6,6 +6,7 @@
  * @b: second number.
  * Return: returns the remainder of the division of a by b.
  */
+
 int op_mod(int a, int b)
 {
 	if (b == 0)

@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	int a, b;
 	int (*operation)(int, int);
 
-	if (argc != 4 || argv[2][1] != '\0')
+	if (argc != 4)
 	{
 		printf("Error\n");
 		exit(98);
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	b = atoi(argv[3]);
 	operation = get_op_func(argv[2]);
 
-	if (operation == NULL)
+	if (!operation)
 	{
 		printf("Error\n");
 		exit(99);

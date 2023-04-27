@@ -3,7 +3,7 @@
 void Tortoise(void) __attribute__ ((constructor));
 
 /**
-  * first - first function before main.
+  * Tortoise - first function before main.
   * Return: Nothing.
   */
 void Tortoise(void)

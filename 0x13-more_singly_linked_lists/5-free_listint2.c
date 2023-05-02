@@ -21,10 +21,8 @@ void free_listint2(listint_t **head)
 
 	while (new_list != NULL)
 	{
-		listint_t *add_nodeint = new_list;
-
+		free(new_list);
 		new_list = new_list->next;
-		free(add_nodeint);
 	}
 	*head = NULL;
 }

@@ -17,7 +17,9 @@ void free_listint2(listint_t **head)
 		return;
 	}
 
-	for (listint_t *new_list = *head; new_list != NULL;)
+	listint_t *new_list = *head;
+
+	while (new_list != NULL)
 	{
 		listint_t *add_nodeint = new_list;
 

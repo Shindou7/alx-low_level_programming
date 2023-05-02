@@ -16,9 +16,10 @@ void free_listint(listint_t *head)
 
 	add_nodeint = head;
 
-	do {
+	while (add_nodeint != NULL)
+	{
 		add_nodeint = add_nodeint->next;
 		free(head);
 		head = add_nodeint;
-	} while (add_nodeint == NULL);
+	}
 }

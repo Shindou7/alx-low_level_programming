@@ -15,19 +15,15 @@ void free_listint2(listint_t **head)
 	listint_t *add_nodeint;
 
 	add_nodeint = *head;
-	if (head)
-	{
-		while (add_nodeint)
-		{
-			add_nodeint = add_nodeint->next;
-			free(*head);
-			*head = add_nodeint;
-		}
-	}
-	else
+	if (!head || !*head)
 	{
 		return;
 	}
-
-	*head = 0;
+	while (add_nodeint)
+	{
+		add_nodeint = add_nodeint->next;
+		free(*head);
+		*head = add_nodeint;
+	}
+	head = NULL;
 }

@@ -20,5 +20,5 @@ void free_listint(listint_t *head)
 		add_nodeint = add_nodeint->next;
 		free(head);
 		head = add_nodeint;
-	} while (add_nodeint != NULL);
+	} while (add_nodeint == NULL);
 }

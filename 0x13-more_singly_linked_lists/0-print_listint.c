@@ -4,7 +4,7 @@
 #include "lists.h"
 
 /**
- * print_listint - check the code print list in
+ * print_listint - check the code print list int.
  *
  * @h: the head of listint
  * Return:the number of nodes.

@@ -16,7 +16,7 @@ void free_listint2(listint_t **head)
 
 	add_nodeint = *head;
 
-	if (head == 0)
+	if (*head == NULL)
 	{
 		return;
 	}

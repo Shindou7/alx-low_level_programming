@@ -12,19 +12,17 @@
 
 void free_listint2(listint_t **head)
 {
-	listint_t *add_nodeint;
-
-	add_nodeint = *head;
-
 	if (head == NULL)
 	{
 		return;
 	}
-	while (add_nodeint)
+
+	for (listint_t *new_list = *head; new_list != NULL;)
 	{
-		add_nodeint = add_nodeint->next;
-		free(*head);
-		*head = add_nodeint;
+		listint_t *add_nodeint = new_list;
+
+		new_list = new_list->next;
+		free(add_nodeint);
 	}
 	*head = NULL;
 }

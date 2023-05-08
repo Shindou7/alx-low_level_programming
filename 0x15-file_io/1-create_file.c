@@ -12,21 +12,26 @@ int create_file(const char *filename, char *text_content)
 {
 	int _open, _write, length = 0;
 
+/** The created file must have those permissions: rw------- */
+	mode_t mode = S_IRUSR | S_IWUSR;
+
 	if (!filename)
 		return (-1);
-	if (text_content != NULL)
-	{
-		while (text_content[length])
-			length++;
-	}
+	if (!text_content)
+		text_content = "";
+	while (text_content[length])
+		length++;
 
-	_open = open(filename, O_CREAT | O_RDWR | O_WRONLY | O_TRUNC, 0600);
-
-	_write = write(_open, text_content, length);
-
-	if (_write == -1 || _open == -1)
+	_open = open(filename, O_WRONLY | O_RDWR | O_CREAT | O_TRUNC, mode);
+	if (_open == -1)
 		return (-1);
 
+	_write = write(_open, text_content, length);
+	if (_write == -1)
+	{
+		close(_open);
+		return (-1);
+	}
 	close(_open);
 	return (1);
 }

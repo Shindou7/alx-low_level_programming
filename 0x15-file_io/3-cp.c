@@ -18,7 +18,7 @@ void close_the_file(int fd, char *file_to)
 	if (_close == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
-		dprintf(STDERR_FILENO, "Error closing file: %s\n", file_to);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_to);
 		exit(100);
 	}
 }
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		dprintf(STDERR_FILENO, "%s\n", "Usage: cp file_from file_to");
 		exit(97);
 	}
 	fb_from = open(argv[1], O_RDONLY);

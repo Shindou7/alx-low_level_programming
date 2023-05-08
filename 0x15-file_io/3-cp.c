@@ -9,7 +9,7 @@ int main(int argc, char *argv[]);
 
 /**
  * close_the_file - Closes file.
- * @fb: _open file.
+ * @fd: _open file.
  * @file_to: name of file.
  *
  * Return: nothing

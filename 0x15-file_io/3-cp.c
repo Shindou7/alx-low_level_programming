@@ -5,42 +5,41 @@
 #include <fcntl.h>
 
 /**
- * close_the_file - Closes file.
- * @fd: _open file.
- * @file_to: name of file.
+ * close_file - Closes file.
+ * @fd: file descriptor.
+ * @filename: name of file.
  *
- * Return: nothing
+ * Return: nothing.
  */
-void close_the_file(int fd, char *file_to)
+void close_file(int fd, char *filename)
 {
-	int _close = close(fd);
-
-	if (_close == -1)
+	if (close(fd) == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
-		dprintf(STDERR_FILENO, "Error closing file: %s\n", file_to);
+		dprintf(STDERR_FILENO, "Error closing file: %s\n", filename);
 		exit(100);
 	}
 }
+
 /**
  * main - Copies the contents of a file to another file.
- * @argc: The number of argument.
- * @argv: pointers to the arguments.
+ * @argc: The number of arguments.
+ * @argv: Pointers to the arguments.
  * Return: 0 on success, otherwise exits with an error code.
  */
 int main(int argc, char *argv[])
 {
-	char buffer[1024];
+	int fd_from, fd_to;
 	ssize_t bytes_read, bytes_written;
-	int fb_from, fd_to;
+	char buffer[1024];
 
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	fb_from = open(argv[1], O_RDONLY);
-	if (fb_from == -1)
+	fd_from = open(argv[1], O_RDONLY);
+	if (fd_from == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
@@ -49,22 +48,21 @@ int main(int argc, char *argv[])
 	if (fd_to == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		close_the_file(fb_from, argv[1]);
+		close_file(fd_from, argv[1]);
 		exit(99);
 	}
-	while ((bytes_read = read(fb_from, buffer, sizeof(buffer))) > 0)
+	while ((bytes_read = read(fd_from, buffer, sizeof(buffer))) > 0)
 	{
 		bytes_written = write(fd_to, buffer, bytes_read);
 		if (bytes_written != bytes_read)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			close_the_file(fb_from, argv[1]);
-			close_the_file(fd_to, argv[2]);
+			close_file(fd_from, argv[1]);
+			close_file(fd_to, argv[2]);
 			exit(99);
 		}
 	}
-
-	close_the_file(fb_from, argv[1]);
-	close_the_file(fd_to, argv[2]);
+	close_file(fd_from, argv[1]);
+	close_file(fd_to, argv[2]);
 	return (0);
 }

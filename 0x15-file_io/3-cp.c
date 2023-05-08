@@ -4,9 +4,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-void close_the_file(int fd, char *file_to);
-int main(int argc, char *argv[]);
-
 /**
  * close_the_file - Closes file.
  * @fd: _open file.

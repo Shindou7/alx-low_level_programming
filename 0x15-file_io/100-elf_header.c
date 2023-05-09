@@ -54,7 +54,8 @@ void print_type(char *ptr)
 	}
 	printf("  Type:                              ");
 
-	switch (type) {
+	switch (type)
+	{
 	case ET_NONE:
 		printf("NONE (None)\n");
 		break;

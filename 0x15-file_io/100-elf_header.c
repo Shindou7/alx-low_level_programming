@@ -196,6 +196,8 @@ void print_class(unsigned char *ep_pointer)
  */
 int check_elf(unsigned char *ep_pointer)
 {
+	int ptr;
+
 	if (ptr[0] == 0x7f && ptr[1] == 'E' && ptr[2] == 'L' && ptr[3] == 'F')
 		return (1);
 

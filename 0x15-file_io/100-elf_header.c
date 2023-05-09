@@ -92,7 +92,9 @@ void print_osabi(unsigned char *ep_pointer)
 		"Stratus Technologies OpenVOS"
 		};
 	int osabi = ep_pointer[EI_OSABI];
-	const char *osabi_name = osabi < (sizeof(osabi_names)/sizeof(osabi_names[0])) ?
+
+	const char *osabi_name =
+		osabi < (sizeof(osabi_names)/sizeof(osabi_names[0])) ?
 		osabi_names[osabi] : "Unknown";
 	printf("  OS/ABI:                            %s\n", osabi_name);
 	printf("  ABI Version:                       %d\n",

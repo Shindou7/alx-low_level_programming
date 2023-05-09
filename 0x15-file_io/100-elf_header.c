@@ -223,7 +223,7 @@ int check_elf(unsigned char *ep_pointer)
 int main(int argc, char *argv[])
 {
 	int fd, ret_read;
-	char ptr[27];
+	char ep_pointer[27];
 	Elf64_Ehdr *header;
 
 	if (argc != 2)
@@ -237,20 +237,20 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-	ret_read = read(fd, ptr, sizeof(ptr));
+	ret_read = read(fd, header, sizeof(ep_pointer));
 	if (ret_read == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		(fd);
 		exit(98);
 	}
-	if (!check_elf(ptr))
+	if (!check_elf(ep_pointer))
 	{
 		dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
 		close(fd);
 		exit(98);
 	}
-	header = (Elf64_Ehdr *)ptr;
+	header = (Elf64_Ehdr *)ep_pointer;
 	printf("ELF Header:\n");
 	print_magic(header->ep_pointer);
 	print_class(header->ep_pointer);

@@ -197,6 +197,12 @@ void print_class(unsigned char *ep_pointer)
 		printf("ELF64\n");
 	else
 		printf("<unknown: %x>\n", ep_pointer[EI_CLASS]);
+
+	print_data(ep_pointer);
+	print_version(ep_pointer);
+	print_osabi(ep_pointer);
+	print_type(ep_pointer);
+	print_addr(ep_pointer);
 }
 /**
  * check_elf - Checks if a file is an ELF file.
@@ -237,7 +243,7 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-	ret_read = read(fd, header, sizeof(ep_pointer));
+	ret_read = read(fd, header, sizeof(Elf64_Ehdr));
 	if (ret_read == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
@@ -250,16 +256,6 @@ int main(int argc, char *argv[])
 		close(fd);
 		exit(98);
 	}
-	header = (Elf64_Ehdr *)ep_pointer;
-	printf("ELF Header:\n");
-	print_magic(header->ep_pointer);
-	print_class(header->ep_pointer);
-	print_data(header->ep_pointer);
-	print_version(header->ep_pointer);
-	print_osabi(header->ep_pointer);
-	print_abi(header->ep_pointer);
-	print_type(header->e_type, header->ep_pointer);
-	print_entry(header->e_entry, header->ep_pointer);
 	close(fd);
 	return (0);
 }

@@ -256,3 +256,58 @@ void close_elf_and_abi(int elf, unsigned char *pt)
 	printf("  ABI Version:                       %d\n",
 	       pt[EI_ABIVERSION]);
 }
+
+
+
+/**
+ * main - Displays the information contained in the
+ *        ELF header at the start of an ELF file.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
+ *
+ * Return: 0 on success.
+ *
+ * Description: If the file is not an ELF File or
+ *              the function fails - exit code 98.
+ */
+
+int main(int __attribute__((__unused__)) argc, char *argv[])
+{
+	Elf64_Ehdr header;
+	ssize_t n;
+	int fd;
+
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		exit(98);
+	}
+
+	n = read(fd, &header, sizeof(header));
+	if (n == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: %s is not an ELF file\n", argv[1]);
+		close(fd);
+		exit(98);
+	}
+
+	printf("ELF Header:\n");
+	_magic(header.e_ident);
+	_class(header.e_ident);
+	_data(header.e_ident);
+	_version(header.e_ident);
+	_osabi(header.e_ident);
+	printf("  ABI Version:                       %d\n",
+	       header.e_ident[EI_ABIVERSION]);
+	_type(header.e_type, header.e_ident);
+	_entry(header.e_entry, header.e_ident);
+
+	if (close(fd) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+		exit(98);
+	}
+
+	return (0);
+}

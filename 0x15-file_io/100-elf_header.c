@@ -7,12 +7,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-int elf_header(int argc, char *argv[]);
-void print_addr_and_type(char *ptr);
-void print_osabi_version(char *ptr);
-void display_data(char *ptr);
-void print_elf_info(char *ptr);
 int is_elf(char *ptr);
+void print_magic(char *ptr);
+void print_data(char *ptr);
+void print_osabi(char *ptr);
+void print_version(char *ptr);
+void print_type(char *ptr);
+void print_addr(char *ptr);
+void print_elf_info(char *ptr);
+int elf_header(int argc, char *argv[]);
 
 /**
  * is_elf - check if it is an elf file.
@@ -32,46 +35,12 @@ int is_elf(char *ptr)
 	return (1);
 }
 
-
 /**
- * print_elf_info - print ELF header information
+ * print_magic - prints magic.
  * @ptr: magic.
  * Return: no return.
  */
-void print_elf_info(char *ptr)
-{
-	char sys = ptr[4] + '0';
-
-	if (sys == '0')
-		exit(98);
-	printf("ELF Header:\n");
-	print_magic(ptr);
-
-	switch (sys)
-	{
-		case '1':
-			printf("  Class:                             ELF32\n");
-			break;
-		case '2':
-			printf("  Class:                             ELF64\n");
-			break;
-		default:
-			printf("  Unknown ELF class\n");
-			break;
-	}
-	print_data(ptr);
-	print_version(ptr);
-	print_osabi(ptr);
-	print_type(ptr);
-	print_addr(ptr);
-}
-
-/**
- * display_magic_info - displays magic information.
- * @ptr: pointer to the ELF header.
- * Return: void.
- */
-void display_magic_info(char *ptr)
+void print_magic(char *ptr)
 {
 	int i;
 
@@ -83,13 +52,12 @@ void display_magic_info(char *ptr)
 	printf("\n");
 }
 
-
 /**
- * display_data - displays the data format of an ELF file.
- * @ptr: pointer to the ELF header.
- * Return: none.
+ * print_data - prints data.
+ * @ptr: magic.
+ * Return: no return.
  */
-void display_data(char *ptr)
+void print_data(char *ptr)
 {
 	char data = ptr[5];
 
@@ -104,125 +72,106 @@ void display_data(char *ptr)
 }
 
 /**
- * print_osabi_version - prints osabi and version
+ * print_osabi - prints osabi.
  * @ptr: magic.
  * Return: no return.
  */
-void print_osabi_version(char *ptr)
+void print_osabi(char *ptr)
 {
 	char osabi = ptr[7];
-	int version = ptr[6];
 
 	printf("  OS/ABI:                            ");
-	if (osabi == 0)
+
+	switch (osabi)
+	{
+	case 0:
 		printf("UNIX - System V\n");
-	else if (osabi == 2)
+		break;
+	case 2:
 		printf("UNIX - NetBSD\n");
-	else if (osabi == 6)
+		break;
+	case 3:
+		printf("UNIX - GNU Hurd\n");
+		break;
+	case 6:
 		printf("UNIX - Solaris\n");
-	else
+		break;
+	case 7:
+		printf("UNIX - AIX\n");
+		break;
+	case 8:
+		printf("UNIX - IRIX\n");
+		break;
+	case 9:
+		printf("UNIX - FreeBSD\n");
+		break;
+	case 10:
+		printf("UNIX - Tru64\n");
+		break;
+	case 11:
+		printf("UNIX - Novell Modesto\n");
+		break;
+	case 12:
+		printf("UNIX - OpenBSD\n");
+		break;
+	case 13:
+		printf("UNIX - OpenVMS\n");
+		break;
+	default:
 		printf("<unknown: %x>\n", osabi);
+		break;
+	}
+}
+
+/**
+ * print_version - prints version.
+ * @ptr: magic.
+ * Return: no return.
+ */
+void print_version(char *ptr)
+{
+	int version = ptr[6];
+
 	printf("  ABI Version:                       %d\n", ptr[8]);
 
 	printf("  Version:                           %d", version);
+
 	if (version == EV_CURRENT)
 		printf(" (current)");
+
 	printf("\n");
 }
+
 /**
- * print_addr_and_type - prints address and type
+ * print_type - prints type.
  * @ptr: magic.
  * Return: no return.
  */
-void print_addr_and_type(char *ptr)
+void print_type(char *ptr)
 {
-	int i;
-	int begin;
-	char sys;
-
-	printf("  Entry point address:               0x");
-
-	sys = ptr[4] + '0';
-	if (sys == '1')
-	{
-		begin = 26;
-		printf("80");
-		for (i = begin; i >= 22; i--)
-		{
-			if (ptr[i] > 0)
-				printf("%x", ptr[i]);
-			else if (ptr[i] < 0)
-				printf("%x", 256 + ptr[i]);
-		}
-		if (ptr[7] == 6)
-			printf("00");
-	}
-
-	if (sys == '2')
-	{
-		begin = 26;
-		for (i = begin; i > 23; i--)
-		{
-			if (ptr[i] >= 0)
-				printf("%02x", ptr[i]);
-
-			else if (ptr[i] < 0)
-				printf("%02x", 256 + ptr[i]);
-
-		}
-	}
-	printf("\n");
-
-	char type = ptr[16];
-
-	if (ptr[5] == 1)
-		type = ptr[16];
-	else
-		type = ptr[17];
+	int type = *(unsigned short int *)(ptr + 16);
 
 	printf("  Type:                              ");
-	if (type == 0)
-		printf("NONE (No file type)\n");
-	else if (type == 1)
-		printf("REL (Relocatable file)\n");
-	else if (type == 2)
-		printf("EXEC (Executable file)\n");
-	else if (type == 3)
-		printf("DYN (Shared object file)\n");
-	else if (type == 4)
-		printf("CORE (Core file)\n");
-	else
-		printf("<unknown: %x>\n", type);
-}
 
-/**
- * elf_header - prints ELF header information.
- * @argc: number of arguments.
- * @argv: arguments vector.
- * Return: Always 0.
- */
-int elf_header(int argc, char *argv[])
-{
-	struct stat st;
-	int ret;
-
-	if (argc != 2)
+	switch (type)
 	{
-		fprintf(stderr, "Usage: elf_header elf_filename\n");
-		exit(98);
+		case ET_NONE:
+			printf("NONE (No file type)\n");
+			break;
+		case ET_REL:
+			printf("REL (Relocatable file)\n");
+			break;
+		case ET_EXEC:
+			printf("EXEC (Executable file)\n");
+			break;
+		case ET_DYN:
+			printf("DYN (Shared object file)\n");
+			break;
+		case ET_CORE:
+			printf("CORE (Core file)\n");
+			break;
+		default:
+			printf("<unknown: %x>\n", type);
+			break;
 	}
-	ret = stat(argv[1], &st);
-	if (ret == -1)
-	{
-		fprintf(stderr, "Err: file can not be open\n");
-		exit(98);
-	}
-
-	if (!S_ISREG(st.st_mode) || !(st.st_mode & S_IXUSR))
-	{
-		fprintf(stderr, "Err: It is not an ELF\n");
-		exit(98);
-	}
-	check_sys(argv[1]);
-	return (0);
 }

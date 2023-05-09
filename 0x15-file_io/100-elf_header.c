@@ -198,3 +198,61 @@ void _entry(unsigned long int e_entry, unsigned char *pt)
 	else
 		printf("%lu (bytes into file)\n", e_entry);
 }
+
+
+
+/**
+ * _type - Prin
+ * @e_type: The ELF type.
+ * @pt: A poin
+ */
+void _type(unsigned int e_type, unsigned char *pt)
+{
+	if (pt[EI_DATA] == ELFDATA2MSB)
+		e_type >>= 8;
+
+	printf("  Type:                              ");
+
+	switch (e_type)
+	{
+		case ET_NONE:
+			printf("NONE (None)\n");
+			break;
+		case ET_REL:
+			printf("REL (Relocatable file)\n");
+			break;
+		case ET_EXEC:
+			printf("EXEC (Executable file)\n");
+			break;
+		case ET_DYN:
+			printf("DYN (Shared object file)\n");
+			break;
+		case ET_CORE:
+			printf("CORE (Core file)\n");
+			break;
+		default:
+			printf("<unknown: %x>\n", e_type);
+	}
+}
+
+void close_elf_and_abi(int elf, unsigned char *pt);
+
+/**
+ * close_elf_and_abi - Closes an ELF file and prints the ABI version.
+ * @elf: The file descriptor of the ELF file.
+ * @pt: A pointer to an array containing the ELF ABI version.
+ *
+ * Description: If the file cannot be closed - exit code 98.
+ */
+void close_elf_and_abi(int elf, unsigned char *pt)
+{
+	if (close(elf) == -1)
+	{
+		dprintf(STDERR_FILENO,
+			"Error: Can't close fd %d\n", elf);
+		exit(98);
+	}
+
+	printf("  ABI Version:                       %d\n",
+	       pt[EI_ABIVERSION]);
+}

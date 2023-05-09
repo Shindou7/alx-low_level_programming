@@ -6,256 +6,241 @@
 #include <unistd.h>
 #include <elf.h>
 
-int main(int argc, char *argv[]);
-int check_elf(unsigned char *ep_pointer);
-void print_class(unsigned char *ep_pointer);
-void print_magic(unsigned char *ep_pointer);
-void print_data(unsigned char *ep_pointer);
-void print_version(unsigned char *ep_pointer);
-void print_osabi(unsigned char *ep_pointer);
-void print_type(char *ptr);
-void print_entry(char *ptr);
 /**
- * print_entry - prints the entry.
- * @ptr: pointer to the ELF header.
+ * print_addr - prints address
+ * @ptr: magic.
  * Return: no return.
  */
-void print_entry(char *ptr)
+void print_addr(char *ptr)
 {
-	unsigned long int e_entry;
-	unsigned char *ep_pointer;
+	int i;
+	int begin;
 	char sys;
 
-	ep_pointer = (unsigned char *)ptr;
-	e_entry = *((unsigned long int *)(ptr + 0x18));
 	printf("  Entry point address:               0x");
 
-	sys = ep_pointer[EI_VERSION];
-	if (sys == EV_CURRENT)
+	sys = ptr[4] + '0';
+	if (sys == '1')
 	{
-		if (ep_pointer[EI_DATA] == ELFDATA2MSB)
+		begin = 26;
+		printf("80");
+		for (i = begin; i >= 22; i--)
 		{
-			e_entry = ((e_entry << 8) & 0xFF00FF00) |
-				((e_entry >> 8) & 0xFF00FF);
-			e_entry = (e_entry << 16) | (e_entry >> 16);
+			if (ptr[i] > 0)
+				printf("%x", ptr[i]);
+			else if (ptr[i] < 0)
+				printf("%x", 256 + ptr[i]);
 		}
-
-		if (ep_pointer[EI_CLASS] == ELFCLASS32)
-			printf("%08x\n", (unsigned int)e_entry);
-		else if (ep_pointer[EI_CLASS] == ELFCLASS64)
-			printf("%016lx\n", e_entry);
+		if (ptr[7] == 6)
+			printf("00");
 	}
+
+	if (sys == '2')
+	{
+		begin = 26;
+		for (i = begin; i > 23; i--)
+		{
+			if (ptr[i] >= 0)
+				printf("%02x", ptr[i]);
+
+			else if (ptr[i] < 0)
+				printf("%02x", 256 + ptr[i]);
+
+		}
+	}
+	printf("\n");
 }
+
 /**
- * print_type - prints the type
- * @ptr: a pointer
+ * print_type - prints type
+ * @ptr: magic.
+ * Return: no return.
  */
 void print_type(char *ptr)
 {
-	unsigned int type;
+	char type = ptr[16];
 
 	if (ptr[5] == 1)
-	{
-		type = *(unsigned int *)(ptr + 16);
-	}
+		type = ptr[16];
 	else
-	{
-		type = *(unsigned int *)(ptr + 18);
-	}
-	printf("  Type:                              ");
+		type = ptr[17];
 
-	switch (type)
-	{
-	case ET_NONE:
-		printf("NONE (None)\n");
-		break;
-	case ET_REL:
+	printf("  Type:                              ");
+	if (type == 0)
+		printf("NONE (No file type)\n");
+	else if (type == 1)
 		printf("REL (Relocatable file)\n");
-		break;
-	case ET_EXEC:
+	else if (type == 2)
 		printf("EXEC (Executable file)\n");
-		break;
-	case ET_DYN:
+	else if (type == 3)
 		printf("DYN (Shared object file)\n");
-		break;
-	case ET_CORE:
+	else if (type == 4)
 		printf("CORE (Core file)\n");
-		break;
-	default:
+	else
 		printf("<unknown: %x>\n", type);
-	}
 }
 
 /**
  * print_osabi - prints osabi
- * @ep_pointer: magic.
+ * @ptr: magic.
  * Return: no return.
  */
-void print_osabi(unsigned char *ep_pointer)
+void print_osabi(char *ptr)
 {
-	const char *osabi_names[] = {
-		"System V", "HP-UX", "NetBSD", "Linux",
-		"GNU Hurd", "Solaris", "AIX", "IRIX",
-		"FreeBSD", "Tru64", "Novell Modesto",
-		"OpenBSD", "OpenVMS", "NonStop Kernel",
-		"AROS", "Fenix OS", "CloudABI",
-		"Stratus Technologies OpenVOS"
-		};
-	int osabi = ep_pointer[EI_OSABI];
+	char osabi = ptr[7];
 
-	const char *osabi_name =
-		osabi < (sizeof(osabi_names) / sizeof(osabi_names[0])) ?
-		osabi_names[osabi] : "Unknown";
-	printf("  OS/ABI:                            %s\n", osabi_name);
-	printf("  ABI Version:                       %d\n",
-	       ep_pointer[EI_ABIVERSION]);
+	printf("  OS/ABI:                            ");
+	if (osabi == 0)
+		printf("UNIX - System V\n");
+	else if (osabi == 2)
+		printf("UNIX - NetBSD\n");
+	else if (osabi == 6)
+		printf("UNIX - Solaris\n");
+	else
+		printf("<unknown: %x>\n", osabi);
+
+	printf("  ABI Version:                       %d\n", ptr[8]);
 }
+
+
 /**
- * print_version - Prints the version
- * @ep_pointer: A pointer
+ * print_version - prints version
+ * @ptr: magic.
+ * Return: no return.
  */
-void print_version(unsigned char *ep_pointer)
+void print_version(char *ptr)
 {
-	int version = ep_pointer[EI_VERSION];
+	int version = ptr[6];
 
 	printf("  Version:                           %d", version);
+
 	if (version == EV_CURRENT)
-	{
 		printf(" (current)");
-	}
+
 	printf("\n");
 }
-
 /**
- * print_data - Prints the data
- * @ep_pointer: A pointer
+ * print_data - prints data
+ * @ptr: magic.
+ * Return: no return.
  */
-void print_data(unsigned char *ep_pointer)
+void print_data(char *ptr)
 {
-	printf("  Data:                              ");
-	switch (ep_pointer[EI_DATA])
-	{
-		case ELFDATANONE:
-			printf("none\n");
-			break;
-		case ELFDATA2LSB:
-			printf("2's complement, little endian");
-			if (ep_pointer[EI_VERSION] == EV_CURRENT)
-			{
-				printf(" (current)");
-			}
-			printf("\n");
-			break;
-		case ELFDATA2MSB:
-			printf("2's complement, big endian");
-			if (ep_pointer[EI_VERSION] == EV_CURRENT)
-			{
-				printf(" (current)");
-			}
-			printf("\n");
-			break;
-		default:
-			printf("<unknown: %x>\n", ep_pointer[EI_CLASS]);
-	}
+	char data = ptr[5];
+
+	printf("  Data:                              2's complement");
+	if (data == 1)
+		printf(", little endian\n");
+
+	if (data == 2)
+		printf(", big endian\n");
 }
-
-
 /**
- * print_magic - Prints the magic
- * @ep_pointer: A pointer
- *
- * Description: Magic numbers.
+ * print_magic - prints magic info.
+ * @ptr: magic.
+ * Return: no return.
  */
-void print_magic(unsigned char *ep_pointer)
+void print_magic(char *ptr)
 {
-	printf("  Magic:   ");
-	for (int i = 0; i < EI_NIDENT; i++)
-	{
-		printf("%02x", ep_pointer[i]);
-		if (i == EI_CLASS || i == EI_DATA || i == EI_VERSION || i == EI_OSABI)
-		{
-			printf(" ");
-		}
-	}
+	int bytes;
+
+	printf("  Magic:  ");
+
+	for (bytes = 0; bytes < 16; bytes++)
+		printf(" %02x", ptr[bytes]);
+
 	printf("\n");
+
 }
 
-
 /**
- * print_class - Prints the class
- * @ep_pointer: A pointer
+ * check_sys - check the version system.
+ * @ptr: magic.
+ * Return: no return.
  */
-void print_class(unsigned char *ep_pointer)
+void check_sys(char *ptr)
 {
-	printf("  Class:                             ");
+	char sys = ptr[4] + '0';
 
-	if (ep_pointer[EI_CLASS] == ELFCLASSNONE)
-		printf("none\n");
-	else if (ep_pointer[EI_CLASS] == ELFCLASS32)
-		printf("ELF32\n");
-	else if (ep_pointer[EI_CLASS] == ELFCLASS64)
-		printf("ELF64\n");
-	else
-		printf("<unknown: %x>\n", ep_pointer[EI_CLASS]);
+	if (sys == '0')
+		exit(98);
 
-	print_data(ep_pointer);
-	print_version(ep_pointer);
-	print_osabi(ep_pointer);
-	print_type(ep_pointer);
-	print_entry(ep_pointer);
+	printf("ELF Header:\n");
+	print_magic(ptr);
+
+	if (sys == '1')
+		printf("  Class:                             ELF32\n");
+
+	if (sys == '2')
+		printf("  Class:                             ELF64\n");
+
+	print_data(ptr);
+	print_version(ptr);
+	print_osabi(ptr);
+	print_type(ptr);
+	print_addr(ptr);
 }
-/**
- * check_elf - Checks if a file is an ELF file.
- * @ep_pointer: A pointer to an array containing the ELF magic numbers.
- *
- * Return: If the file.
- */
-int check_elf(unsigned char *ep_pointer)
-{
-	unsigned char *ptr = ep_pointer;
 
-	if (ptr[0] == 0x7f && ptr[1] == 'E' && ptr[2] == 'L' && ptr[3] == 'F')
+/**
+ * check_elf - check if it is an elf file.
+ * @ptr: magic.
+ * Return: 1 if it is an elf file. 0 if not.
+ */
+int check_elf(char *ptr)
+{
+	int addr = (int)ptr[0];
+	char E = ptr[1];
+	char L = ptr[2];
+	char F = ptr[3];
+
+	if (addr == 127 && E == 'E' && L == 'L' && F == 'F')
 		return (1);
 
 	return (0);
 }
 
 /**
- * main - Entry point.
- * @argc: Number of arg
- * @argv: Array
+ * main - check the code for Holberton School students.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
  * Return: Always 0.
  */
 int main(int argc, char *argv[])
 {
 	int fd, ret_read;
-	char ep_pointer[27];
-	Elf64_Ehdr *header;
+	char ptr[27];
 
 	if (argc != 2)
 	{
 		dprintf(STDERR_FILENO, "Usage: elf_header elf_filename\n");
 		exit(98);
 	}
+
 	fd = open(argv[1], O_RDONLY);
+
 	if (fd < 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Err: file can not be open\n");
 		exit(98);
 	}
-	ret_read = read(fd, header, sizeof(Elf64_Ehdr));
+
+	lseek(fd, 0, SEEK_SET);
+	ret_read = read(fd, ptr, 27);
+
 	if (ret_read == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
-		(fd);
+		dprintf(STDERR_FILENO, "Err: The file can not be read\n");
 		exit(98);
 	}
-	if (!check_elf(ep_pointer))
+
+	if (!check_elf(ptr))
 	{
-		dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
-		close(fd);
+		dprintf(STDERR_FILENO, "Err: It is not an ELF\n");
 		exit(98);
 	}
+
+	check_sys(ptr);
 	close(fd);
+
 	return (0);
 }

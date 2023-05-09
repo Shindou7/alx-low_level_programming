@@ -81,3 +81,46 @@ void _class(unsigned char *pt)
 	else
 		printf("<unknown: %x>\n", class);
 }
+
+
+/**
+ * _data - Prints the data encoding of an ELF header.
+ * @pt: A pointer to an array containing the ELF magic numbers.
+ *
+ * Description: The data encoding can be either little-endian or big-endian.
+ */
+void _data(unsigned char *pt)
+{
+	printf("  Data:                              ");
+	if (pt[EI_DATA] == ELFDATA2LSB)
+		printf("2's complement, little-endian\n");
+	else if (pt[EI_DATA] == ELFDATA2MSB)
+		printf("2's complement, big-endian\n");
+	else
+		printf("<unknown: %x>\n", pt[EI_DATA]);
+}
+
+
+
+/**
+ * _version - Prints the v
+ * @pt: A pointer
+ */
+void _version(unsigned char *pt)
+{
+	printf("  Version:                           ");
+
+	switch (pt[EI_VERSION])
+	{
+		case EV_NONE:
+			printf("Invalid version\n");
+			break;
+		case EV_CURRENT:
+			printf("%d (current)\n", EV_CURRENT);
+			break;
+		default:
+			printf("%d\n", pt[EI_VERSION]);
+			break;
+	}
+}
+

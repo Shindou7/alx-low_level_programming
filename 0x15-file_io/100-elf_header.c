@@ -174,3 +174,27 @@ void _osabi(unsigned char *pt)
 			printf("<unknown: %x>\n", pt[EI_OSABI]);
 	}
 }
+
+
+/**
+ * _entry - Prints the prog
+ * @e_entry: The proble offset.
+ * @pt: A pointer to an array.
+ */
+void _entry(unsigned long int e_entry, unsigned char *pt)
+{
+	printf("  Start of program headers:          ");
+
+	if (pt[EI_DATA] == ELFDATA2MSB)
+	{
+		e_entry = ((e_entry << 8) & 0xFF00FF00) |
+			  ((e_entry >> 8) & 0xFF00FF);
+		e_entry = (e_entry << 16) | (e_entry >> 16);
+	}
+
+	if (pt[EI_CLASS] == ELFCLASS32)
+		printf("%u (bytes into file)\n", (unsigned int)e_entry);
+
+	else
+		printf("%lu (bytes into file)\n", e_entry);
+}

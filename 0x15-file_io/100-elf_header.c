@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <elf.h>
+
 int main(int argc, char *argv[]);
 int check_elf(unsigned char *ep_pointer);
 void print_class(unsigned char *ep_pointer);

@@ -175,3 +175,53 @@ void print_type(char *ptr)
 			break;
 	}
 }
+
+/**
+
+main - entry point.
+@argc: number of arguments.
+@argv: arguments.
+Return: 0 on success.
+*/
+int main(int argc, char *argv[])
+{
+	int fd;
+	struct stat file_stats;
+	char *map_start;
+
+	if (argc != 2)
+	{
+		fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
+		return (1);
+	}
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		return (1);
+	}
+	if (fstat(fd, &file_stats) < 0)
+	{
+		perror("fstat");
+		close(fd);
+		return (1);
+	}
+	map_start = mmap(NULL, file_stats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (map_start == MAP_FAILED)
+	{
+		perror("mmap");
+		close(fd);
+		return (1);
+	}
+	if (!check_elf(map_start))
+	{
+		fprintf(stderr, "%s is not an ELF file\n", argv[1]);
+		munmap(map_start, file_stats.st_size);
+		close(fd);
+		return (1);
+	}
+	print_elf_info(map_start);
+	munmap(map_start, file_stats.st_size);
+	close(fd);
+	return (0);
+}

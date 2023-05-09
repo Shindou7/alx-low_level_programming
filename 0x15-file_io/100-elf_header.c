@@ -6,222 +6,62 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <elf.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int is_elf(char *ptr);
-void print_magic(char *ptr);
-void print_data(char *ptr);
-void print_osabi(char *ptr);
-void print_version(char *ptr);
-void print_type(char *ptr);
-void print_addr(char *ptr);
-void print_elf_info(char *ptr);
-int elf_header(int argc, char *argv[]);
+void check_elf(unsigned char *pt);
+void _magic(unsigned char *pt);
+void _class(unsigned char *pt);
+void _data(unsigned char *pt);
+void _version(unsigned char *pt);
+void _abi(unsigned char *pt);
+void _osabi(unsigned char *pt);
+void _type(unsigned int e_type, unsigned char *pt);
+void _entry(unsigned long int e_entry, unsigned char *pt);
+void close_elf(int elf);
 
 /**
- * is_elf - check if it is an elf file.
+ * check_elf - check if it is an elf file.
  * @ptr: magic.
  * Return: 1 if it is an elf file. 0 if not.
  */
-int is_elf(char *ptr)
+void check_elf(unsigned char *pt)
 {
-	unsigned char magic[4] = {0x7f, 'E', 'L', 'F'};
-	int i;
+	unsigned char elf_magic[4] = { 0x7f, 'E', 'L', 'F' };
 
-	for (i = 0; i < 4; i++)
+	if (memcmp(e_ident, elf_magic, 4) != 0)
 	{
-		if (ptr[i] != magic[i])
-			return (0);
-	}
-	return (1);
-}
-
-/**
- * print_magic - prints magic.
- * @ptr: magic.
- * Return: no return.
- */
-void print_magic(char *ptr)
-{
-	int i;
-
-	printf("Magic:  ");
-
-	for (i = 0; i < 16; i++)
-		printf("%02x ", ptr[i]);
-
-	printf("\n");
-}
-
-/**
- * print_data - prints data.
- * @ptr: magic.
- * Return: no return.
- */
-void print_data(char *ptr)
-{
-	char data = ptr[5];
-
-	printf("  Data:                              2's complement");
-
-	if (data == 1)
-		printf(", little endian\n");
-	else if (data == 2)
-		printf(", big endian\n");
-	else
-		printf(", unknown format (%d)\n", data);
-}
-
-/**
- * print_osabi - prints osabi.
- * @ptr: magic.
- * Return: no return.
- */
-void print_osabi(char *ptr)
-{
-	char osabi = ptr[7];
-
-	printf("  OS/ABI:                            ");
-
-	switch (osabi)
-	{
-	case 0:
-		printf("UNIX - System V\n");
-		break;
-	case 2:
-		printf("UNIX - NetBSD\n");
-		break;
-	case 3:
-		printf("UNIX - GNU Hurd\n");
-		break;
-	case 6:
-		printf("UNIX - Solaris\n");
-		break;
-	case 7:
-		printf("UNIX - AIX\n");
-		break;
-	case 8:
-		printf("UNIX - IRIX\n");
-		break;
-	case 9:
-		printf("UNIX - FreeBSD\n");
-		break;
-	case 10:
-		printf("UNIX - Tru64\n");
-		break;
-	case 11:
-		printf("UNIX - Novell Modesto\n");
-		break;
-	case 12:
-		printf("UNIX - OpenBSD\n");
-		break;
-	case 13:
-		printf("UNIX - OpenVMS\n");
-		break;
-	default:
-		printf("<unknown: %x>\n", osabi);
-		break;
+		dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
+		exit(98);
 	}
 }
 
-/**
- * print_version - prints version.
- * @ptr: magic.
- * Return: no return.
- */
-void print_version(char *ptr)
-{
-	int version = ptr[6];
-
-	printf("  ABI Version:                       %d\n", ptr[8]);
-
-	printf("  Version:                           %d", version);
-
-	if (version == EV_CURRENT)
-		printf(" (current)");
-
-	printf("\n");
-}
 
 /**
- * print_type - prints type.
- * @ptr: magic.
- * Return: no return.
- */
-void print_type(char *ptr)
-{
-	int type = *(unsigned short int *)(ptr + 16);
-
-	printf("  Type:                              ");
-
-	switch (type)
-	{
-		case ET_NONE:
-			printf("NONE (No file type)\n");
-			break;
-		case ET_REL:
-			printf("REL (Relocatable file)\n");
-			break;
-		case ET_EXEC:
-			printf("EXEC (Executable file)\n");
-			break;
-		case ET_DYN:
-			printf("DYN (Shared object file)\n");
-			break;
-		case ET_CORE:
-			printf("CORE (Core file)\n");
-			break;
-		default:
-			printf("<unknown: %x>\n", type);
-			break;
-	}
-}
-
-/**
-
-main - entry point.
-@argc: number of arguments.
-@argv: arguments.
-Return: 0 on success.
+ * print_magic - Prints the magic numbers of an ELF header.
+ * @magic: A pointer to an array containing the ELF magic numbers.
+ * Description: Magic numbers are separated by spaces.
 */
-int main(int argc, char *argv[])
+void print_magic(unsigned char *magic)
 {
-	int fd;
-	struct stat file_stats;
-	char *map_start;
+	int i;
 
-	if (argc != 2)
+	printf(" Magic: ");
+	for (i = 0; i < EI_NIDENT; i++, magic++)
 	{
-		fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
-		return (1);
+		printf("%02x", *magic);
+		if (i == EI_NIDENT - 1)
+			printf("\n");
+		else
+			printf(" ");
 	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-	{
-		perror("open");
-		return (1);
-	}
-	if (fstat(fd, &file_stats) < 0)
-	{
-		perror("fstat");
-		close(fd);
-		return (1);
-	}
-	map_start = mmap(NULL, file_stats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-	if (map_start == MAP_FAILED)
-	{
-		perror("mmap");
-		close(fd);
-		return (1);
-	}
-	if (!check_elf(map_start))
-	{
-		fprintf(stderr, "%s is not an ELF file\n", argv[1]);
-		munmap(map_start, file_stats.st_size);
-		close(fd);
-		return (1);
-	}
-	print_elf_info(map_start);
-	munmap(map_start, file_stats.st_size);
-	close(fd);
-	return (0);
 }
+
+
+
+

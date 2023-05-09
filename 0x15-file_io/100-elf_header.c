@@ -100,7 +100,6 @@ void print_osabi(unsigned char *ep_pointer)
 	printf("  ABI Version:                       %d\n",
 	       ep_pointer[EI_ABIVERSION]);
 }
-
 /**
  * print_version - Prints the version
  * @ep_pointer: A pointer
@@ -108,6 +107,7 @@ void print_osabi(unsigned char *ep_pointer)
 void print_version(unsigned char *ep_pointer)
 {
 	int version = ep_pointer[EI_VERSION];
+
 	printf("  Version:                           %d", version);
 	if (version == EV_CURRENT)
 	{
@@ -219,14 +219,12 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Usage: elf_header elf_filename\n");
 		exit(98);
 	}
-
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-
 	ret_read = read(fd, ptr, sizeof(ptr));
 	if (ret_read == -1)
 	{
@@ -234,16 +232,13 @@ int main(int argc, char *argv[])
 		(fd);
 		exit(98);
 	}
-
 	if (!check_elf(ptr))
 	{
 		dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
 		close(fd);
 		exit(98);
 	}
-
 	header = (Elf64_Ehdr *)ptr;
-
 	printf("ELF Header:\n");
 	print_magic(header->ep_pointer);
 	print_class(header->ep_pointer);
@@ -253,7 +248,6 @@ int main(int argc, char *argv[])
 	print_abi(header->ep_pointer);
 	print_type(header->e_type, header->ep_pointer);
 	print_entry(header->e_entry, header->ep_pointer);
-
 	close(fd);
 	return (0);
 }

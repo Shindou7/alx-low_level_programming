@@ -202,7 +202,7 @@ void print_class(unsigned char *ep_pointer)
 	print_version(ep_pointer);
 	print_osabi(ep_pointer);
 	print_type(ep_pointer);
-	print_addr(ep_pointer);
+	print_entry(ep_pointer);
 }
 /**
  * check_elf - Checks if a file is an ELF file.

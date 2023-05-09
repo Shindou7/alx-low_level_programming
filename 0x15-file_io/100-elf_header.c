@@ -80,15 +80,13 @@ void print_type(char *ptr)
 		printf("<unknown: %x>\n", type);
 }
 
-/**
- * print_osabi - Prints the OS/ABI of an ELF header.
- * @ptr: A pointer to an array containing the ELF version.
- */
-void print_osabi(unsigned char *ptr)
+void print_osabi(char *ptr)
 {
+	char osabi = ptr[EI_OSABI];
+
 	printf("  OS/ABI:                            ");
 
-	switch (ptr[EI_OSABI])
+	switch (osabi)
 	{
 	case ELFOSABI_NONE:
 		printf("UNIX - System V\n");
@@ -121,8 +119,10 @@ void print_osabi(unsigned char *ptr)
 		printf("Standalone App\n");
 		break;
 	default:
-		printf("<unknown: %x>\n", ptr[EI_OSABI]);
+		printf("<unknown: %x>\n", osabi);
 	}
+
+	printf("  ABI Version:                       %d\n", ptr[EI_ABIVERSION]);
 }
 
 

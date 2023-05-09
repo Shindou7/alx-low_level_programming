@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <elf.h>
+
 /**
  * print_entry - prints the entry.
  * @ptr: pointer to the ELF header.
@@ -196,7 +197,7 @@ void print_class(unsigned char *ep_pointer)
  */
 int check_elf(unsigned char *ep_pointer)
 {
-	int ptr;
+	unsigned char *ptr = ep_pointer;
 
 	if (ptr[0] == 0x7f && ptr[1] == 'E' && ptr[2] == 'L' && ptr[3] == 'F')
 		return (1);

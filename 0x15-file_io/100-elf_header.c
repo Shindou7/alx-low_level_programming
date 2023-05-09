@@ -124,3 +124,53 @@ void _version(unsigned char *pt)
 	}
 }
 
+/**
+ * _osabi - Prints the OS/ABI of an ELF header.
+ * @pt: A pointer to an array containing the ELF version.
+ */
+void _osabi(unsigned char *pt)
+{
+	printf("  OS/ABI:                            ");
+
+	switch (pt[EI_OSABI])
+	{
+		case ELFOSABI_SYSV:
+			printf("UNIX - System V ABI\n");
+			break;
+		case ELFOSABI_HPUX:
+			printf("UNIX - HP-UX ABI\n");
+			break;
+		case ELFOSABI_NETBSD:
+			printf("UNIX - NetBSD ABI\n");
+			break;
+		case ELFOSABI_LINUX:
+			printf("UNIX - GNU/Linux ABI\n");
+			break;
+		case ELFOSABI_SOLARIS:
+			printf("UNIX - Solaris ABI\n");
+			break;
+		case ELFOSABI_AIX:
+			printf("UNIX - AIX ABI\n");
+			break;
+		case ELFOSABI_IRIX:
+			printf("UNIX - IRIX ABI\n");
+			break;
+		case ELFOSABI_FREEBSD:
+			printf("UNIX - FreeBSD ABI\n");
+			break;
+		case ELFOSABI_OPENBSD:
+			printf("UNIX - OpenBSD ABI\n");
+			break;
+		case ELFOSABI_ARM_AEABI:
+			printf("ARM - ARM EABI\n");
+			break;
+		case ELFOSABI_ARM:
+			printf("ARM - ARM\n");
+			break;
+		case ELFOSABI_STANDALONE:
+			printf("Standalone App\n");
+			break;
+		default:
+			printf("<unknown: %x>\n", pt[EI_OSABI]);
+	}
+}

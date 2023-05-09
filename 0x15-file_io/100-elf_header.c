@@ -5,7 +5,15 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <elf.h>
-
+int main(int argc, char *argv[]);
+int check_elf(unsigned char *ep_pointer);
+void print_class(unsigned char *ep_pointer);
+void print_magic(unsigned char *ep_pointer);
+void print_data(unsigned char *ep_pointer);
+void print_version(unsigned char *ep_pointer);
+void print_osabi(unsigned char *ep_pointer):
+void print_type(char *ptr);
+void print_entry(char *ptr);
 /**
  * print_entry - prints the entry.
  * @ptr: pointer to the ELF header.

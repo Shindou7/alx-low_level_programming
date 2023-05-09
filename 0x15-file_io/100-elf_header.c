@@ -44,12 +44,14 @@ void print_type(char *ptr)
 {
 	unsigned int type;
 
-	if (ptr[5] == 1) {
+	if (ptr[5] == 1)
+	{
 		type = *(unsigned int *)(ptr + 16);
-	} else {
+	}
+	else
+	{
 		type = *(unsigned int *)(ptr + 18);
 	}
-
 	printf("  Type:                              ");
 
 	switch (type) {

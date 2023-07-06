@@ -1,4 +1,5 @@
 #include "main.h"
+#include "common.h"
 
 /**
  * flip_bits - returns the number of bits you would

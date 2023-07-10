@@ -90,9 +90,6 @@ void print_osabi(Elf64_Ehdr *header)
 	printf("  OS/ABI:                            ");
 	switch (header->e_ident[EI_OSABI])
 	{
-		case ELFOSABI_NONE:
-			printf("UNIX - System V\n");
-			break;
 		case ELFOSABI_SYSV:
 			printf("UNIX - System V\n");
 			break;

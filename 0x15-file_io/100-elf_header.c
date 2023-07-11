@@ -79,7 +79,8 @@ void print_data(Elf64_Ehdr *header)
  */
 void print_version(Elf64_Ehdr *header)
 {
-	printf("  Version:                           %d\n", EV_CURRENT);
+	printf("  Version:                           %d (current)\n",
+		header->e_ident[EI_VERSION]);
 }
 /**
  * print_osabi - Prints the OS/ABI of the ELF header
@@ -99,15 +100,12 @@ void print_osabi(Elf64_Ehdr *header)
 		case ELFOSABI_SOLARIS:
 			printf("UNIX - Solaris\n");
 			break;
-		case ELFOSABI_NONE:
-			printf("Unknown\n");
-			break;
 		default:
 			printf("Unknown\n");
 			break;
 	}
-	printf("  ABI Version:                       %d\n",
-		header->e_ident[EI_ABIVERSION]);
+	    printf("  ABI Version:                       %d\n",
+		    header->e_ident[EI_ABIVERSION]);
 }
 /**
  * print_type - Prints the type of the ELF header
@@ -122,21 +120,20 @@ void print_type(Elf64_Ehdr *header)
 			printf("No file type\n");
 			break;
 		case ET_REL:
-			printf("REL (Relocatable file)\n");
+			printf("Relocatable file\n");
 			break;
 		case ET_EXEC:
-			printf("EXEC (Executable file)\n");
+			printf("Executable file\n");
 			break;
 		case ET_DYN:
-			printf("DYN (Shared object file)\n");
+			printf("Shared object file\n");
 			break;
 		case ET_CORE:
-			printf("CORE (Core file)\n");
+			printf("Core file\n");
 			break;
 		default:
 			printf("Unknown\n");
-			break;
-	}
+			break;}
 }
 /**
  * print_entry_point - Prints the entry point address of the ELF header
@@ -144,9 +141,8 @@ void print_type(Elf64_Ehdr *header)
  */
 void print_entry_point(Elf64_Ehdr *header)
 {
-	printf("  Entry point address:               0x%x\n",
+	printf("  Entry point address:               0x%lx\n",
 		header->e_entry);
-
 }
 
 /**
@@ -159,11 +155,6 @@ int read_elf_header(const char *filename, Elf64_Ehdr *header)
 {
 	int fd;
 
-	if (strcmp(filename, __FILE__) == 0)
-	{
-		fprintf(stderr, "Error: Input file is a source code file.\n");
-		return (-1);
-	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
@@ -172,7 +163,8 @@ int read_elf_header(const char *filename, Elf64_Ehdr *header)
 	}
 	if (read(fd, header, sizeof(*header)) != sizeof(*header))
 	{
-		fprintf(stderr, "Error: Unable to read ELF header from file %s\n", filename);
+		fprintf(stderr, "Error: Unable to read ELF header from file %s\n",
+			filename);
 		close(fd);
 		return (-1);
 	}

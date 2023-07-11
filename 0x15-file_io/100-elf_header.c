@@ -4,20 +4,20 @@
 #include <stdlib.h>
 #include <elf.h>
 
-void print_magic(Elf64_Ehdr *header);
-void print_class(Elf64_Ehdr *header);
-void print_data(Elf64_Ehdr *header);
-void print_version(Elf64_Ehdr *header);
-void print_osabi(Elf64_Ehdr *header);
-void print_type(Elf64_Ehdr *header);
-void print_entry_point(Elf64_Ehdr *header);
-int read_elf_header(const char *filename, Elf64_Ehdr *header);
+void print_magic(Elf32_Ehdr *header);
+void print_class(Elf32_Ehdr *header);
+void print_data(Elf32_Ehdr *header);
+void print_version();
+void print_osabi(Elf32_Ehdr *header);
+void print_type(Elf32_Ehdr *header);
+void print_entry_point(Elf32_Ehdr *header);
+int read_elf_header(const char *filename, Elf32_Ehdr *header);
 int main(int argc, char *argv[]);
 /**
  * print_magic - Prints the magic bytes of the ELF header
  * @header: Pointer to the ELF header structure
  */
-void print_magic(Elf64_Ehdr *header)
+void print_magic(Elf32_Ehdr *header)
 {
 	int i;
 
@@ -30,7 +30,7 @@ void print_magic(Elf64_Ehdr *header)
  * print_class - Prints the class of the ELF header
  * @header: Pointer to the ELF header structure
  */
-void print_class(Elf64_Ehdr *header)
+void print_class(Elf32_Ehdr *header)
 {
 	printf("  Class:                             ");
 	switch (header->e_ident[EI_CLASS])
@@ -54,7 +54,7 @@ void print_class(Elf64_Ehdr *header)
  * print_data - Prints the data encoding of the ELF header
  * @header: Pointer to the ELF header structure
  */
-void print_data(Elf64_Ehdr *header)
+void print_data(Elf32_Ehdr *header)
 {
 	printf("  Data:                              ");
 	switch (header->e_ident[EI_DATA])
@@ -75,17 +75,16 @@ void print_data(Elf64_Ehdr *header)
 }
 /**
  * print_version - Prints the version of the ELF header
- * @header: Pointer to the ELF header structure
  */
-void print_version(Elf64_Ehdr *header)
+void print_version()
 {
-	printf("  Version:                           %d\n", EV_CURRENT);
+	printf("  Version:                           1\n");
 }
 /**
  * print_osabi - Prints the OS/ABI of the ELF header
  * @header: Pointer to the ELF header structure
  */
-void print_osabi(Elf64_Ehdr *header)
+void print_osabi(Elf32_Ehdr *header)
 {
 	printf("  OS/ABI:                            ");
 	switch (header->e_ident[EI_OSABI])
@@ -113,7 +112,7 @@ void print_osabi(Elf64_Ehdr *header)
  * print_type - Prints the type of the ELF header
  * @header: Pointer to the ELF header structure
  */
-void print_type(Elf64_Ehdr *header)
+void print_type(Elf32_Ehdr *header)
 {
 	printf("  Type:                              ");
 	switch (header->e_type)
@@ -142,10 +141,10 @@ void print_type(Elf64_Ehdr *header)
  * print_entry_point - Prints the entry point address of the ELF header
  * @header: Pointer to the ELF header structure
  */
-void print_entry_point(Elf64_Ehdr *header)
+void print_entry_point(Elf32_Ehdr *header)
 {
-	printf("  Entry point address:               0x%x\n",
-		header->e_entry);
+	printf("  Entry point address:               0x%1x\n",
+		(unsigned long)header->e_entry);
 
 }
 
@@ -155,15 +154,10 @@ void print_entry_point(Elf64_Ehdr *header)
  * @header: Pointer to the ELF header structure
  * Return: 0 on success, -1 on failure
  */
-int read_elf_header(const char *filename, Elf64_Ehdr *header)
+int read_elf_header(const char *filename, Elf32_Ehdr *header)
 {
 	int fd;
 
-	if (strcmp(filename, __FILE__) == 0)
-	{
-		fprintf(stderr, "Error: Input file is a source code file.\n");
-		return (-1);
-	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
@@ -188,7 +182,7 @@ int read_elf_header(const char *filename, Elf64_Ehdr *header)
  */
 int main(int argc, char *argv[])
 {
-	Elf64_Ehdr header;
+	Elf32_Ehdr header;
 
 	if (argc != 2)
 	{

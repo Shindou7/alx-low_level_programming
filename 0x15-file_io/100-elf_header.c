@@ -79,8 +79,7 @@ void print_data(Elf64_Ehdr *header)
  */
 void print_version(Elf64_Ehdr *header)
 {
-	printf("  Version:                           %d (current)\n",
-		header->e_ident[EI_VERSION]);
+	printf("  Version:                           %d\n", EV_CURRENT);
 }
 /**
  * print_osabi - Prints the OS/ABI of the ELF header
@@ -99,6 +98,9 @@ void print_osabi(Elf64_Ehdr *header)
 			break;
 		case ELFOSABI_SOLARIS:
 			printf("UNIX - Solaris\n");
+			break;
+		case ELFOSABI_NONE:
+			printf("Unknown\n");
 			break;
 		default:
 			printf("Unknown\n");
@@ -142,8 +144,8 @@ void print_type(Elf64_Ehdr *header)
  */
 void print_entry_point(Elf64_Ehdr *header)
 {
-	printf("  Entry point address:               0x%lx\n",
-		(unsigned long)header->e_entry);
+	printf("  Entry point address:               0x%x\n",
+		header->e_entry);
 
 }
 
@@ -157,6 +159,11 @@ int read_elf_header(const char *filename, Elf64_Ehdr *header)
 {
 	int fd;
 
+	if (strcmp(filename, __FILE__) == 0)
+	{
+		fprintf(stderr, "Error: Input file is a source code file.\n");
+		return (-1);
+	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{

@@ -79,7 +79,8 @@ void print_data(Elf64_Ehdr *header)
  */
 void print_version(Elf64_Ehdr *header)
 {
-	printf("  Version:                           %d (current)\n", header->e_ident[EI_VERSION]);
+	printf("  Version:                           %d (current)\n",
+		header->e_ident[EI_VERSION]);
 }
 /**
  * print_osabi - Prints the OS/ABI of the ELF header
@@ -103,8 +104,9 @@ void print_osabi(Elf64_Ehdr *header)
 			printf("Unknown\n");
 			break;
 	}
+	printf("  ABI Version:                       %d\n",
+		header->e_ident[EI_ABIVERSION]);
 }
-
 /**
  * print_type - Prints the type of the ELF header
  * @header: Pointer to the ELF header structure
@@ -118,30 +120,30 @@ void print_type(Elf64_Ehdr *header)
 			printf("No file type\n");
 			break;
 		case ET_REL:
-			printf("Relocatable file\n");
+			printf("REL (Relocatable file)\n");
 			break;
 		case ET_EXEC:
-			printf("Executable file\n");
+			printf("EXEC (Executable file)\n");
 			break;
 		case ET_DYN:
-        printf("Shared object file\n");
-	break;
+			printf("DYN (Shared object file)\n");
+			break;
 		case ET_CORE:
-	printf("Core file\n");
-	break;
+			printf("CORE (Core file)\n");
+			break;
 		default:
-	printf("Unknown\n");
-	break;
-	}
+			printf("Unknown\n");
+			break;}
 }
-
 /**
  * print_entry_point - Prints the entry point address of the ELF header
  * @header: Pointer to the ELF header structure
  */
 void print_entry_point(Elf64_Ehdr *header)
 {
-	printf("  Entry point address:               0x%lx\n", header->e_entry);
+	printf("  Entry point address:               0x%lx\n",
+		(unsigned long)header->e_entry);
+
 }
 
 /**

@@ -133,7 +133,8 @@ void print_type(Elf64_Ehdr *header)
 			break;
 		default:
 			printf("Unknown\n");
-			break;}
+			break;
+	}
 }
 /**
  * print_entry_point - Prints the entry point address of the ELF header

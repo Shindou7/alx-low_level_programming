@@ -73,7 +73,7 @@ void fork_prompt(char *command)
 		Hcommand_line(command, args);
 		if (execve(command, args, NULL) == -1)
 		{
-			perror("Command execution failed");
+			perror("./shell");
 			exit(EXIT_FAILURE);
 		}
 	}

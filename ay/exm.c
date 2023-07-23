@@ -71,7 +71,7 @@ void fork_prompt(char *command)
 		char *args[MAXCOMMANDLENGTH];
 
 		Hcommand_line(command, args);
-		if (execve(command, args, NULL) == -1)
+		if (execve(args[0], args) == -1)
 		{
 			perror("./shell");
 			exit(EXIT_FAILURE);
@@ -83,7 +83,6 @@ void fork_prompt(char *command)
 		int status;
 
 		waitpid(pid, &status, 0);
-		signal(SIGINT, write_prompt);
 		
 	}
 }

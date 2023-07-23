@@ -25,18 +25,9 @@ void write_prompt(int get_sigint)
 {
 	(void)get_sigint;
 
-	write(STDOUT_FILENO, "\n$Amshi$ ", 9);
+	write(STDOUT_FILENO, "$Amshi$ ", 9);
 }
-/**
- * sig_hand - Display the prompt.
- *@sig: signal_Handler.
- *Return: nothing.
- */
-/** Signal handler for SIGINT (^C) */
-void sig_hand(int sig)
-{
-	write_prompt(sig);
-}
+
 /**Function to remove the trailing newline character from strings*/
 /**
  * remove_newline - Display the prompt.

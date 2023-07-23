@@ -73,6 +73,11 @@ void fork_prompt(char *command)
 		Hcommand_line(command, args);
 		if (execve(args[0], args, NULL) == -1)
 		{
+			/* Handle built-in commands */
+			if (strcmp(args[0], "ls") == 0)
+			{
+				execv("/bin/ls", args);
+			}
 			perror("./shell");
 			exit(EXIT_FAILURE);
 		}

@@ -83,6 +83,7 @@ void fork_prompt(char *command)
 		int status;
 
 		waitpid(pid, &status, 0);
+		write_prompt();
 	}
 }
 /**Function to parse the command and its arguments*/

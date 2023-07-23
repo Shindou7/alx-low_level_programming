@@ -112,10 +112,12 @@ int main(void)
 {
 	char command[MAXCOMMANDLENGTH];
 
+	signal(SIGINT, write_prompt);
+
 	while (1)
 	{
 
-		write_prompt(0);
+		write(STDOUT_FILENO, "$Amshi$ ", 8)
 		/** Display the prompt to the user*/
 		if (fgets(command, sizeof(command), stdin) == NULL)
 		{

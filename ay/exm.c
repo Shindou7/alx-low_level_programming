@@ -26,7 +26,7 @@ void write_prompt(int get_sigint)
 	(void)get_sigint;
 
 	signal(SIGINT, write_prompt);
-	write(STDOUT_FILENO, "$\nAmshi$ ", 9);
+	write(STDOUT_FILENO, "\n$Amshi$ ", 9);
 }
 
 /**Function to remove the trailing newline character from strings*/

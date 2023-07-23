@@ -96,7 +96,6 @@ void fork_prompt(char *command)
 		int status;
 
 		waitpid(pid, &status, 0);
-		
 	}
 }
 /**Function to parse the command and its arguments*/

@@ -117,7 +117,6 @@ void Hcommand_line(char *command, char **args)
  */
 void exec_exit()
 {
-	printf("\n");
 	exit(EXIT_SUCCESS);
 }
 

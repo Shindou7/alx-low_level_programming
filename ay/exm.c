@@ -110,11 +110,15 @@ void Hcommand_line(char *command, char **args)
  */
 int main(void)
 {
+	char prompt[] = "$Amshi$"
 	char command[MAXCOMMANDLENGTH];
 
 	while (1)
 	{
-		write_prompt(0); /** Display the prompt to the user*/
+		write(STDOUT_FILENO, prompt, sizeof(prompt) - 1);
+		/**write(STDOUT_FILENO, prompt, 2);*/
+		/**write_prompt(0);*/
+		/** Display the prompt to the user*/
 		if (fgets(command, sizeof(command), stdin) == NULL)
 		{
 			printf("\n");

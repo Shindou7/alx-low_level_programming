@@ -37,10 +37,12 @@ void write_prompt(int get_sigint)
  */
 void remove_newline(char *strings)
 {
+	size_t length;
+
 	if (strings == NULL)
 		return;
 
-	size_t length = strlen(strings);
+	length = strlen(strings);
 
 	if (length > 0 && strings[length - 1] == '\n')
 		strings[length - 1] = '\0';

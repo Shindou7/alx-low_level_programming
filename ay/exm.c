@@ -8,13 +8,19 @@
 
 #define MAXCOMMANDLENGTH 100
 
-int main();
+int main(void);
 void Hcommand_line(char *command, char **args);
 void fork_prompt(char *command);
 void remove_newline(char *strings);
 void write_prompt(int get_sigint);
 
 /**Function to display the shell prompt*/
+
+/**
+ * write_prompt - Display the prompt.
+ *@get_sigint: signal_Handler.
+ *Return: nothing.
+ */
 void write_prompt(int get_sigint)
 {
 	(void)get_sigint;
@@ -24,6 +30,11 @@ void write_prompt(int get_sigint)
 }
 
 /**Function to remove the trailing newline character from strings*/
+/**
+ * remove_newline - Display the prompt.
+ *@strings: signal_Handler.
+ *Return: nothing.
+ */
 void remove_newline(char *strings)
 {
 	if (strings == NULL)
@@ -36,6 +47,11 @@ void remove_newline(char *strings)
 }
 
 /**Function to fork and execute the user command*/
+/**
+ * fork_prompt - Display the prompt.
+ *@command: signal_Handler.
+ *Return: nothing.
+ */
 void fork_prompt(char *command)
 {
 	pid_t pid = fork();
@@ -47,8 +63,8 @@ void fork_prompt(char *command)
 	}
 	else if (pid == 0)
 	{
-/**Child process
- * we change this line char* args[] = {command, NULL};by two line*/
+/**Child process*/
+/**we change this line char* args[] = {command, NULL};by two line*/
 
 		char *args[MAXCOMMANDLENGTH];
 
@@ -68,6 +84,12 @@ void fork_prompt(char *command)
 	}
 }
 /**Function to parse the command and its arguments*/
+/**
+ * Hcommand_line - Display the prompt.
+ *@command: signal_Handler.
+ *@args: signal_Handler.
+ *Return: nothing.
+ */
 void Hcommand_line(char *command, char **args)
 {
 	char *token = strtok(command, " ");
@@ -80,8 +102,11 @@ void Hcommand_line(char *command, char **args)
 	}
 	args[i] = NULL;
 }
-
-int main()
+/**
+ * main - the main code.
+ * Return: always 0.
+ */
+int main(void)
 {
 	char command[MAXCOMMANDLENGTH];
 
@@ -92,9 +117,9 @@ int main()
 		{
 			printf("\n");
 			break;
-		}/*Call the function to remove the trailing newline character*/
-		remove_newline(command);       
-         /**Execute the user command*/
+		} /*Call the function to remove the trailing newline character*/
+		remove_newline(command);
+		/**Execute the user command*/
 		fork_prompt(command);
 	}
 	return (0);

@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #define MAXCOMMANDLENGTH 1024
-extern char **environ; // Declare the external environment variable array
+extern char **environ; /**Declare the external environment variable array*/
 
 int main(void);
 void Hcommand_line(char *command, char **args);

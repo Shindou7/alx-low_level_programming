@@ -6,7 +6,7 @@
 #include <string.h>
 #include <signal.h>
 
-#define MAXCOMMANDLENGTH 100
+#define MAXCOMMANDLENGTH 1024
 
 int main(void);
 void Hcommand_line(char *command, char **args);
@@ -100,7 +100,7 @@ void Hcommand_line(char *command, char **args)
 
 	while (token != NULL && i < MAXCOMMANDLENGTH - 1)
 	{
-		args[i++] = token;
+		args[i++] = strdup(token);
 		token = strtok(NULL, " ");
 	}
 	args[i] = NULL;

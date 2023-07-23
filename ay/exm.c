@@ -110,6 +110,17 @@ void Hcommand_line(char *command, char **args)
 	}
 	args[i] = NULL;
 }
+
+/**
+ * exec_exit - Exit the shell.
+ * Return: nothing.
+ */
+void exec_exit()
+{
+	printf("\n");
+	exit(EXIT_SUCCESS);
+}
+
 /**
  * main - the main code.
  * Return: always 0.
@@ -131,6 +142,12 @@ int main(void)
 			break;
 		} /*Call the function to remove the trailing newline character*/
 		remove_newline(command);
+
+		/**Check if the user entered "exit"*/
+		if (strcmp(command, "exit") == 0)
+		{
+			exec_exit();
+		}
 		/**Execute the user command*/
 		fork_prompt(command);
 	}

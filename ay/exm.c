@@ -71,7 +71,7 @@ void fork_prompt(char *command)
 		char *args[MAXCOMMANDLENGTH];
 
 		Hcommand_line(command, args);
-		if (execve(args[0], args, NULL) == -1)
+		if (execve(command, args, NULL) == -1)
 		{
 			perror("./shell");
 			exit(EXIT_FAILURE);

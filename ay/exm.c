@@ -121,6 +121,21 @@ void exec_exit()
 }
 
 /**
+ * exec_env - Print the current environment.
+ * Return: nothing.
+ */
+void exec_env()
+{
+	char **env_ptr = environ;
+
+	while (*env_ptr != NULL)
+	{
+		printf("%s\n", *env_ptr);
+		env_ptr++;
+	}
+}
+
+/**
  * main - the main code.
  * Return: always 0.
  */
@@ -147,6 +162,12 @@ int main(void)
 		{
 			exec_exit();
 		}
+		/**Check if the user entered "env"*/
+		else if (strcmp(command, "env") == 0)
+		{
+			exec_env();
+		}
+		else
 		/**Execute the user command*/
 		fork_prompt(command);
 	}

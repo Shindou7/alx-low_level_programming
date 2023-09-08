@@ -1,5 +1,6 @@
-#ifndef __HASH_DEFS_H__
-#define __HASH__
+#ifndef __HASH_H__
+#define __HASH_H__
+
 
 #include <stdlib.h>
 #include <string.h>
@@ -75,7 +76,7 @@ typedef struct hash_table_s
 void hash_table_delete(hash_table_t *ht);
 void hash_table_print(const hash_table_t *ht);
 char *hash_table_get(const hash_table_t *ht, const char *key);
-hash_node_t *add_node_at_beginning(hash_node_t *head, const char *key, const char *value);
+hash_node_t *add_node_a(hash_node_t *head, const char *key, const char *value);
 int hash_table_set(hash_table_t *ht, const char *key, const char *value);
 unsigned long int key_index(const unsigned char *key, unsigned long int size);
 unsigned long int hash_djb2(const unsigned char *str);
@@ -83,7 +84,8 @@ hash_table_t *hash_table_create(unsigned long int size);
 
 
 shash_table_t *shash_table_create(unsigned long int size);
-shash_node_t *shash_table_sort_insert(shash_node_t *head, shash_node_t *new_node);
+shash_node_t *shash_table_sort_insert(shash_node_t *head,
+		shash_node_t *new_node);
 int shash_table_set(shash_table_t *ht, const char *key, const char *value);
 char *shash_table_get(const shash_table_t *ht, const char *key);
 void shash_table_print(const shash_table_t *ht);

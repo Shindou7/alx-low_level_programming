@@ -47,6 +47,6 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		return (0);
 
 	k_index = key_index((unsigned char *)key, ht->size);
-	ht->array[k_index] = add_node_at_beginning(ht->array[k_index], key, value);
+	ht->array[k_index] = add_node_a(ht->array[k_index], key, value);
 	return (1);
 }

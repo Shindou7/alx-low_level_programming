@@ -46,7 +46,7 @@ shash_node_t *shash_table_sort_insert(shash_node_t **head,
 
 	if (head == NULL || new_node == NULL)
 		return (NULL);
-	if (head == NULL || strcmp(new_node->key, head->key) <= 0)
+	if (head == NULL || strcmp(new_node->key, (*head)->key) <= 0)
 	{
 		new_node->snext = *head;
 		new_node->sprev = NULL;

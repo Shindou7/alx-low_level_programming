@@ -111,6 +111,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 	new_node->next = ht->array[idx];
 	ht->array[idx] = new_node;
 	ht->shead = shash_table_sort_insert(ht->shead, new_node);
+	ht->stail = new_node;
 	return (1);
 }
 

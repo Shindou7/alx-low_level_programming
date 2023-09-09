@@ -39,29 +39,32 @@ shash_table_t *shash_table_create(unsigned long int size)
  * @new_node: node to insert
  * Return: pointer to the head of the sorted linked list
  */
-shash_node_t *shash_table_sort_insert(shash_node_t *head,
+shash_node_t *shash_table_sort_insert(shash_node_t **head,
 		shash_node_t *new_node)
 {
 	shash_node_t *current;
 
+	if (head == NULL || new_node == NULL)
+		return (NULL);
 	if (head == NULL || strcmp(new_node->key, head->key) <= 0)
 	{
-		new_node->snext = head;
+		new_node->snext = *head;
 		new_node->sprev = NULL;
-		if (head != NULL)
-			head->sprev = new_node;
+		if (*head != NULL)
+			(*head)->sprev = new_node;
+		*head = new_node;
 		return (new_node);
 	}
-	current = head;
+	current = *head;
 	while (current->snext != NULL && strcmp(new_node->key,
-				current->snext->key) > 0)
+				current->snext->key) < 0)
 		current = current->snext;
 	new_node->snext = current->snext;
 	new_node->sprev = current;
 	if (current->snext != NULL)
 		current->snext->sprev = new_node;
 	current->snext = new_node;
-	return (head);
+	return (new_node);
 }
 
 /**

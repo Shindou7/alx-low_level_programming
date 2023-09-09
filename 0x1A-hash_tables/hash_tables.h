@@ -84,7 +84,7 @@ hash_table_t *hash_table_create(unsigned long int size);
 
 
 shash_table_t *shash_table_create(unsigned long int size);
-shash_node_t *shash_table_sort_insert(shash_node_t **head,
+shash_node_t *shash_table_sort_insert(shash_node_t *head,
 		shash_node_t *new_node);
 int shash_table_set(shash_table_t *ht, const char *key, const char *value);
 char *shash_table_get(const shash_table_t *ht, const char *key);

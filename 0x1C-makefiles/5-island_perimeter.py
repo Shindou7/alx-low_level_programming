@@ -1,24 +1,21 @@
 #!/usr/bin/python3
 """
-Module calculateIslandPerimeter
+Module get Island Perimeter
 """
 
 
-def island_perimeter(grid)):
-    """Calculate the perimeter of the island
-    in the grid where "1" is found
-    """
-    perimeter=0
-
+def island_perimeter(grid):
+    """ Calculate Island Perimeter of grid where "1" is found"""
+    perimeter = 0
     for row in range(len(grid)):
         for col in range(len(grid[0])):
             if grid[row][col] == 1:
                 if row == 0 or grid[row - 1][col] == 0:
-                    perimeter += 1  # Top side
+                    perimeter += 1
                 if row == (len(grid) - 1) or grid[row + 1][col] == 0:
-                    perimeter += 1  # Bottom side
+                    perimeter += 1
                 if col == 0 or grid[row][col - 1] == 0:
-                    perimeter += 1  # Left side
+                    perimeter += 1
                 if col == (len(grid[0]) - 1) or grid[row][col + 1] == 0:
-                    perimeter += 1  # Right side
+                    perimeter += 1
     return perimeter

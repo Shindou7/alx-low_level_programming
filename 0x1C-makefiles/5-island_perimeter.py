@@ -3,9 +3,13 @@
 Module calculateIslandPerimeter
 """
 
+
 def island_perimeter(grid)):
-    """ Calculate the perimeter of the island in the grid where "1" is found """
-    perimeter = 0
+    """Calculate the perimeter of the island
+    in the grid where "1" is found
+    """
+    perimeter=0
+
     for row in range(len(grid)):
         for col in range(len(grid[0])):
             if grid[row][col] == 1:

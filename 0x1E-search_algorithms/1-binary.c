@@ -1,7 +1,9 @@
 #include "search_algos.h"
 
 /**
- * binary_search - searches for a value in an array
+ * binary_search - calls to binary_search to return
+ * the index of the number
+ *
  * @array: input array
  * @size: size of the array
  * @value: value to search in
